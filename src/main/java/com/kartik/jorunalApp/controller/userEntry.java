@@ -2,6 +2,7 @@ package com.kartik.jorunalApp.controller;
 
 import com.kartik.jorunalApp.entity.UserEntity;
 import com.kartik.jorunalApp.service.UserEntryService;
+import com.kartik.jorunalApp.service.WeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,8 @@ public class userEntry {
     @Autowired
     private UserEntryService userEntryService;
 
-
+    @Autowired
+    private WeatherService weatherService;
     @PutMapping
     public ResponseEntity<?> update(@RequestBody UserEntity user){
         Authentication a = SecurityContextHolder.getContext().getAuthentication();
@@ -36,6 +38,13 @@ public class userEntry {
         UserEntity u = userEntryService.findByName(name);
         userEntryService.removID(u.getId());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    @GetMapping
+    public ResponseEntity<?> greets(@RequestBody UserEntity user){
+        Authentication a = SecurityContextHolder.getContext().getAuthentication();
+        String name = a.getName();
+
+        return new ResponseEntity<>("Hi "+a.getName()+"Weather feels like " + weatherService.getWeather("Mumbai").getCurrent().getFeelslike(),HttpStatus.OK);
     }
 
 }
