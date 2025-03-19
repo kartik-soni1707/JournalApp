@@ -20,6 +20,8 @@ public class UserEntity {
     @Indexed(unique = true)
     @NonNull
     private  String name;
+    private String email;
+    private  boolean sentiment;
     @NonNull
     private String password;
     private List<String> roles;
